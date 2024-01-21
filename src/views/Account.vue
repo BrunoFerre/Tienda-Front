@@ -98,7 +98,7 @@ export default {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "ticket.pdf";
+          a.download = "Factura Nro. " + nro + ".pdf";
           a.click();
           window.URL.revokeObjectURL(url);
           location.reload();

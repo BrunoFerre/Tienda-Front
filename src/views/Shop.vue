@@ -1,6 +1,6 @@
 <template>
   <h2 class="m-5 text-3xl text-center font-bold pt-3">Tienda</h2>
-  <Spinner v-if="isLoading" class="container mx-auto"/>
+  <Spinner v-if="isLoading" class="container mx-auto" />
   <div v-else class="flex justify-around p-5 lg:gap-5 xl:gap-10">
     <section
       class="sticky top-6 self-start p-4 bg-gradient-to-tl from-emerald-300 rounded-lg shadow-lg border-l-green-400 border-l-8 w-1/4 m:hidden sm:hidden md:hidden"
@@ -8,12 +8,17 @@
       <h4 class="text-2xl font-bold">Categorias</h4>
       <div class="form-control p-2 flex flex-col gap-4">
         <CheckBox
+          
+          :value="'Todas las categorias'"
+          :text="'Todas las categorias'"
+          @change="filtrar('Todas las categorias')"
+        />
+        <CheckBox
           v-for="category in categorias"
           :key="category"
           :text="category.replace('_', ' ')"
           :value="category"
-          v-model="selectedCategories"
-          @change="filtrar"
+          @change="filtrar($event.target.value)"
         />
       </div>
     </section>
@@ -29,7 +34,7 @@
           <Option texto="Mayor a menor" value="mayor" />
           <Option texto="Menor a mayor" value="menor" />
         </select>
-        <Search />
+        <Search v-model="search" />
         <button
           type="submit"
           class="m:hidden sm:hidden font-semibold h-[40px] text-black bg-[#abd373] p-2 rounded-md md:hidden lg:min-w-[200px] text-center"
@@ -61,12 +66,14 @@ export default {
   components: { Product, Search, CheckBox, Option, Spinner },
   data() {
     return {
+      filtro: [],
       productos: [],
       categorias: [],
       selectedCategories: [],
       search: "",
       carrito: [],
       isLoading: true,
+      filtro: [],
     };
   },
   created() {
@@ -119,14 +126,29 @@ export default {
           console.log(error);
         });
     },
-    filtrar() {
-      console.log(this.selectedCategories);
-    },
-    filtroPorNombre(texto) {
-      if (texto === "") {
-        this.productos = this.productos.filter((product) =>
-          product.name.includes(texto)
-        );
+    filtrar(text = "") {
+      if (text === "Todas las categorias") {
+        this.obtenerDatos();
+      }
+      if (text == "") {
+        this.obtenerDatos();
+      } else {
+        let config = {
+          method: "get",
+          maxBodyLength: Infinity,
+          url: `http://localhost:9090/api/products/category?category=${text}&page=0`,
+          headers: {},
+          maxRedirects: 0,
+        };
+
+        axios
+          .request(config)
+          .then((response) => {
+            this.productos = response.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     },
   },

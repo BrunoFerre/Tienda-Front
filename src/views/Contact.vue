@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col items-center justify-start pt-20 h-screen dark">
+    <div class="flex flex-col items-center justify-start pt-20  dark">
   <div class=" w-full max-w-md bg-gray-800 rounded-lg shadow-md p-6">
     <h2 class="text-2xl font-bold text-gray-200 mb-4">Contacto</h2>
     <form class="flex flex-wrap gap-4 items-center justify-center" @submit.prevent="console.log('enviado')">

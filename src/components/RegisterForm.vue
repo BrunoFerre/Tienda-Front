@@ -1,5 +1,5 @@
 <template>
-  <form class="px-7 grid justify-center items-center">
+  <form class="px-7 grid justify-center items-center h-[300px]">
     <div class="grid gap-6" id="form">
       <div class="w-full flex gap-3">
         <input

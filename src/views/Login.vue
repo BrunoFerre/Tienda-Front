@@ -1,6 +1,5 @@
 <template>
-  <h2>Acceder</h2>
-  <div class="flex flex-col items-center justify-center gap-10">
+  <div class="container mx-auto p-10 flex flex-col items-center justify-center gap-10">
     <div
       class="container mx-auto max-w-md relative flex flex-col justify-center p-4 rounded-md text-black bg-white"
     >
