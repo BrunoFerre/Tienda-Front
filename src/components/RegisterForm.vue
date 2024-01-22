@@ -5,7 +5,7 @@
         <input
           class="capitalize shadow-2xl p-3 ex w-full outline-none focus:border-solid focus:border-[1px] border-[#035ec5] placeholder:text-black"
           type="text"
-          placeholder="First Name"
+          placeholder="Nombre"
           id="First-Name"
           name="First-Name"
           required="true"
@@ -14,7 +14,7 @@
         <input
           class="p-3 capitalize shadow-2xl glass w-full placeholder:text-black outline-none focus:border-solid focus:border-[1px] border-[#035ec5]"
           type="text"
-          placeholder="Last Name"
+          placeholder="Apellido"
           id="Last-Name"
           name="Last-Name"
           v-model="lastName"
@@ -34,7 +34,7 @@
         <input
           class="p-3 glass shadow-2xl w-full placeholder:text-black outline-none focus:border-solid focus:border-[1px] border-[#035ec5]"
           type="password"
-          placeholder="Password"
+          placeholder="Contraseña"
           id="password"
           name="password"
           required="true"
@@ -43,7 +43,7 @@
         <input
           class="p-3 glass shadow-2xl w-full placeholder:text-black outline-none focus:border-solid focus:border-[1px] border-[#035ec5]"
           type="password"
-          placeholder="Confirm password"
+          placeholder="Confirmar"
           required="true"
           v-model="confirmPassword"
         />

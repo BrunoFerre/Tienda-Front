@@ -1,5 +1,6 @@
 <template>
   <div class="container mx-auto flex flex-col gap-5 items-center p-10">
+    {{ actualizarsession }}
     <table class="self-start">
       <caption class="text-2xl font-bold mb-5">
         Carrito de compras
@@ -9,7 +10,9 @@
           <th>#</th>
           <th>Producto</th>
           <th>Precio</th>
+          <th>Restar</th>
           <th>Cantidad</th>
+          <th>Añadir</th>
           <th>Total</th>
           <th>Eliminar del carrito</th>
           <th>Ver Detalles</th>
@@ -20,20 +23,30 @@
           <td>{{ index + 1 }}</td>
           <td>{{ product.name }}</td>
           <td>$ {{ product.price }}</td>
+          <td>
+            <button type="submit" @click="restar(index)">
+              <Minus />
+            </button>
+          </td>
           <td>{{ product.quantity }}</td>
+          <td>
+            <button type="submit" @click="sumar(product)">
+              <Plus />
+            </button>
+          </td>
           <td>$ {{ product.price * product.quantity }}</td>
           <td>
             <button
               @click.prevent="removerDelCarrito(product.id)"
-              class="text-white font-bold bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg text-sm p-2 text-center"
+              class="text-white font-bold bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg p-1 text-center"
             >
-              Eliminar del Carrito
+              Eliminar
             </button>
           </td>
           <td>
             <button
-              @click.prevent="this.$router.push(`/products/${product.id}`)"
-              class="text-white font-bold bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg text-sm p-2 text-center"
+              @click.prevent="this.$router.push(`/products:${product.id}`)"
+              class="text-white font-bold bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-red-300 rounded-lg text-m p-1 text-center"
             >
               Ver Detalles
             </button>
@@ -48,7 +61,7 @@
               {{
                 productos
                   .reduce((a, b) => a + b.price * b.quantity, 0)
-                  .toFixed(2)
+                  .toFixed()
               }}</strong
             >
           </th>
@@ -68,9 +81,11 @@
 <script>
 import Swal from "sweetalert2";
 import axios from "axios";
+import Minus from "../components/Icons/Minus.vue";
+import Plus from "../components/Icons/Plus.vue";
 export default {
   name: "Cart",
-  components: { Swal },
+  components: { Swal,Minus,Plus },
   data() {
     return {
       carrito: [],
@@ -101,6 +116,7 @@ export default {
       this.carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
       this.carrito = this.carrito.filter((producto) => producto.id !== id);
       sessionStorage.setItem("carrito", JSON.stringify(this.carrito));
+      location.reload();
     },
     comprar() {
       let data = JSON.stringify([...this.carrito]);
@@ -111,7 +127,7 @@ export default {
         url: "http://localhost:9090/api/buy",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
         maxRedirects: 0,
         data: data,
@@ -134,7 +150,36 @@ export default {
           console.log(error);
         });
     },
+    sumar(producto) {
+      const existe = this.carrito.findIndex((p) => p.id == producto.id);
+      if (existe !== -1) {
+        this.carrito[existe].quantity++;
+      } else {
+        this.carrito.push(producto);
+      }
+      sessionStorage.setItem("carrito", JSON.stringify(this.carrito));
+      location.reload();
+    },
+    restar(index) {
+      const existe = this.carrito[index];
+      if (existe.quantity > 1) {
+        this.carrito[index].quantity--;
+      } else if (existe.quantity === 1) {
+        this.removerDelCarrito(existe.id);
+      }
+      sessionStorage.setItem("carrito", JSON.stringify(this.carrito));
+      location.reload();
+    },
   },
+  computed: {
+        actualizarsession() {
+            window.addEventListener('storage', (event) => {
+                if (event.key === 'carrito') {
+                    this.carrito = JSON.parse(sessionStorage.getItem('carrito')) ?? [];
+                }
+            })
+        }
+    }
 };
 </script>
 <style scoped>

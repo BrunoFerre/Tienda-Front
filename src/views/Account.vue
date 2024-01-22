@@ -65,7 +65,7 @@ export default {
           "http://localhost:9090/api/buy/all?username=" + this.datos.username,
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
         maxRedirects: 0,
       };
@@ -85,7 +85,7 @@ export default {
         maxBodyLength: Infinity,
         url: "http://localhost:9090/api/tickets/generate?ticket=" + nro,
         headers: {
-          Authorization: "Bearer " + sessionStorage.getItem("token"),
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
         responseType: "blob",
       };
@@ -113,7 +113,7 @@ export default {
         maxBodyLength: Infinity,
         url: "http://localhost:9090/auth/person",
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       };
       axios

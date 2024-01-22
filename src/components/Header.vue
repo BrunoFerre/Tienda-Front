@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      token: sessionStorage.getItem("token"),
+      token: localStorage.getItem("token"),
     }
   },
   methods: {
@@ -70,7 +70,7 @@ export default {
               title: "Sesión cerrada!",
               confirmButtonText: "Ok",
             });
-            sessionStorage.removeItem("token");
+            localStorage.removeItem("token");
             setTimeout(() => {
               location.href = "/";
             }, 1000);

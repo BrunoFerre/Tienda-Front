@@ -30,11 +30,18 @@
           class="h-[40px] m:hidden text-lg text-black border-gray-200 rounded-lg"
           @change="ordenar($event.target.value)"
         >
-          <Option texto="Ordenar productos" selected value="ordenar" />
+          <Option texto="Ordenar Precio" selected value="ordenar" />
           <Option texto="Mayor a menor" value="mayor" />
           <Option texto="Menor a mayor" value="menor" />
         </select>
-        <Search v-model="search" />
+        <select
+          class="h-[40px] m:hidden text-lg text-black border-gray-200 rounded-lg"
+          @change="ordenarPorNombre($event.target.value)"
+        >
+          <Option texto="Ordenar Nombre" selected value="ordenar" />
+          <Option texto="A-Z" value="a-z" />
+          <Option texto="Z-A" value="z-a" />
+        </select>
         <button
           type="submit"
           class="m:hidden sm:hidden font-semibold h-[40px] text-black bg-[#abd373] p-2 rounded-md md:hidden lg:min-w-[200px] text-center"
@@ -87,6 +94,7 @@ export default {
         .get("http://localhost:9090/api/products?page=0")
         .then((response) => {
           this.productos = response.data;
+          console.log(this.productos);
         })
         .catch((error) => {
           console.log(error);
@@ -106,6 +114,17 @@ export default {
       }
       if (texto === "menor") {
         this.productos.sort((a, b) => a.price - b.price);
+      }
+    },
+    ordenarPorNombre(texto) {
+      if (texto === "ordenar") {
+        this.productos.sort((a, b) => a.id - b.id);
+      }
+      if (texto === "a-z") {
+        this.productos.sort((a, b) => a.name.localeCompare(b.name));
+      }
+      if (texto === "z-a") {
+        this.productos.sort((a, b) => b.name.localeCompare(a.name));
       }
     },
     obtenerCategorias() {
