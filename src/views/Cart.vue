@@ -20,7 +20,7 @@
           <td>{{ index + 1 }}</td>
           <td>{{ product.name }}</td>
           <td>$ {{ product.price }}</td>
-          <td>{{ product.quantity }}</td>
+          <td> <strong class="text-2xl font-bold p-5 cursor-pointer" @click="restar(index)">-</strong>{{ product.quantity }} <strong class="text-2xl font-bold p-5 cursor-pointer" @click="sumar(product)">+</strong></td>
           <td>$ {{ product.price * product.quantity }}</td>
           <td>
             <button
@@ -134,6 +134,26 @@ export default {
           console.log(error);
         });
     },
+    sumar(producto) {
+      const existe = this.carrito.findIndex(
+        (item) => item.id === producto.id
+      )
+      if (existe !== -1) {
+        this.carrito[existe].quantity++
+      }else{
+        this.carrito.push({...producto, quantity: 1})
+      }
+      sessionStorage.setItem('carrito',JSON.stringify(this.carrito))
+    },
+    restar(index) {
+      const producto = this.carrito[index]
+      if (producto.quantity > 1) {
+        this.carrito[index].quantity--
+      }else if (producto.quantity === 1){
+        this.removerDelCarrito(producto.id)
+      }
+      sessionStorage.setItem('carrito',JSON.stringify(this.carrito))
+    }
   },
 };
 </script>
