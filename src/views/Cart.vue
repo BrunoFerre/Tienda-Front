@@ -91,6 +91,7 @@ export default {
               ...response.data,
               quantity: producto.quantity,
             });
+            this.productos.sort((a, b) => b.quantity - a.quantity);
           })
           .catch((error) => {
             console.log(error);
