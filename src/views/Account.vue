@@ -83,7 +83,7 @@ export default {
       let config = {
         method: "get",
         maxBodyLength: Infinity,
-        url: "http://localhost:9090/api/tickets/generate?ticket=" + nro,
+        url: "http://localhost:9090/api/tickets/generate/"+nro,
         headers: {
           Authorization: "Bearer " + sessionStorage.getItem("token"),
         },
